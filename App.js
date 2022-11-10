@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
     if (response?.type === 'success') {
       const { authentication: {accessToken} } = response;
-      console.log(accessToken);
+      // console.log(accessToken);
       setAccessToken(accessToken)
 
       accessToken && fetchUserInfo();
@@ -41,14 +41,20 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Button
-        disabled={!request}
-        title="Login"
-        onPress={() => {
-          promptAsync();
-        }}
-      />
-      <Text>{ JSON.stringify(user) }</Text>
+
+      {
+        user ? (
+          <Text>{ JSON.stringify(user) }</Text>
+          ) : (
+            <Button
+              disabled={!request}
+              title="Sign In With Google"
+              onPress={() => {
+                promptAsync();
+              }}
+            />
+          )
+      }
       <StatusBar style="auto" />
     </View>
   );
